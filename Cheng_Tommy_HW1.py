@@ -11,65 +11,80 @@ name from the user, reads each line, and prints the line to the
 screen if it is a palindrome.
 '''
 
-filename = input("Enter filename: ")    #ask for user input
-file = open(filename)
 
-#This defines a function to check to see if a word is palindrome, return true if it is"
 def is_palindrome(text):
-    revtext = text[::-1]
-    if revtext == text:
-        return True
+    """
+    Helper function is is_palindrome determines whether a text is a palindrome.
+    Input: text (string)
+    Output: True or False
+    """
+    return text==text[::-1]         # evaluate equality of reversed string with original string
 
-line = file.readline()          #read line
-while line:
-    templine = ''               #create storage variable
-    lowcaseline = line;             
-    lowcaseline = lowcaseline.lower()       #convert to lower case letter
-    for i in range(len(lowcaseline)):   
-        if ord(lowcaseline[i]) > 96 and ord(lowcaseline[i])<123:    #use ASCII code to check for lower case alphabets in the line
-            templine = templine + lowcaseline[i]
+
+
+
+def palindrome(file_name):
+    """
+    This is the main function palindrome. It takes a text file , open and read it to
+    determine whether the text is a palindrome. 
+    Input: filename (string)
+    Output: print statement that tells whether the text is a palindrome
+    """
+    file = open(filename)
+    line = file.readline()          #read line
+    while line:
+        templine = ''               #create storage variable
+        lowcaseline = line;             
+        lowcaseline = lowcaseline.lower()       #convert to lower case letter
+        for i in range(len(lowcaseline)):   
+            if ord(lowcaseline[i]) > 96 and ord(lowcaseline[i])<123:    #use ASCII code to check for lower case alphabets in the line
+                templine = templine + lowcaseline[i]
         
-    if is_palindrome(templine) == True:         #if it is true, print the line and indicators
-        print(line + 'is a palindrome.')    
-    else:
-        print(line + 'is not a palindrome.')
+            if is_palindrome(templine) == True:         #if it is true, print the line and indicators
+                print(line + 'is a palindrome.')    
+            else:
+                print(line + 'is not a palindrome.')
         
-    templine=''
-    templine2=''
+            templine=''
         
-    line = file.readline()
+            line = file.readline()  #read the next line
 
 
-file.close()
+    file.close()
 
+palindrome(input("Enter filename: "))      #ask user to input a filename
 
 #-------------------------------------------------------------------------------------------------------------------------
-"""
-Created on Thu Sep 15 06:58:12 2016
 
-@author: TommyCheng
 """
-"""
-Problem 2:  This program is a semordnilap
-recogniser that accepts a file name 
-from the user and finds and prints all pairs of words that are
-semordnilaps to the screen. 
+Problem 2
 """
 
+def semordnilap(filename):
+    """
+    The semordnilap fucntion accepts a file name 
+    from the user and finds and prints all pairs of words that are
+    semordnilaps to the screen. 
 
-filename = input("Enter filename: ")        #prompt user for input
-file = open(filename)
+    Input: filename (string)
+    Output: words that are semordnilap (string)
+    """
 
-text = file.read().split()     #read the file and split the words into a list
 
-semordnilap_list= []        #create a storage list
+    file = open(filename)           #open the file 
 
-for word1 in text:          #nest for loop: 1st loop go through the wordbank
-    for word2 in text:      #2nd loop goes through the wordbank again
-        if word1 == word2[::-1]:    #check to see if the word is semordnilap 
-            print(word1, word2)     #print words that are semordnilap
+    text = file.read().split()     #read the file and split the words into a list
+
+    #semordnilap_list= []        #create a storage list
+
+    for word1 in text:          #nest for loop: 1st loop go through the wordbank
+        for word2 in text:      #2nd loop goes through the wordbank again
+            if word1 == word2[::-1]:    #check to see if the word is semordnilap 
+                print(word1, word2)     #print words that are semordnilap
     
-file.close()
+    file.close()
+    
+semordnilap(input("Enter filename: ")  )      #prompt user for input
 
 #-------------------------------------------------------------------------------------------------------------------------
 # -*- coding: utf-8 -*-
@@ -85,17 +100,25 @@ Problem 3: character frequency table
 import string
 
 def char_freq_table(name):
+    """
+    This function accepts a text file from the user, builds a frequency listing 
+    of the charachers contained in the file, and prints a sorted and nicely 
+    formatted character frequency table to the screen.
+    
+    Input: name of the file(string)
+    Output: a table
+    """
 
-   file = open(filename)
-   text = file.read()   #read file
+    file = open(filename)   #open the file 
+    text = file.read()   #read file
    
-   for i in range(len(string.printable)):       # For loop: Use str.count function to count the frequency
-       print(string.printable[i],' ', text.count(string.printable[i]))  # of character 
+    for i in range(len(string.printable)):       # For loop: Use str.count function to count the frequency
+        print(string.printable[i],' ', text.count(string.printable[i]))  # of character 
 
 
 filename = input("Enter filename: ")    #ask for user input
 
-char_freq_table(filename)
+char_freq_table(filename)           #execute 
 
 #-------------------------------------------------------------------------------------------------------------------------
 # -*- coding: utf-8 -*-
@@ -122,15 +145,28 @@ icao = {'a':'alfa', 'b':'bravo', 'c':'charlie', 'd':'delta', 'e':'echo',
      'z':'zulu'}
 
 def speak_ICAO(text, pauseletter, pauseword):
-    words = text.lower()
+    """
+    This function takes user-supplied text as input, then returns the text spoken 
+    through the operating system's spoken-word function. It then returns the text
+    as spoken word after translating it into ICAO alphabet. The function does this by parsing each character, stripping out punctuation,
+    and interpreting spaces as breaks between words. The function additionally takes
+    parameters for length of pause between ICAO letters, and length of pause between
+    translated words.
+    Input: text, pauseletter, pauseword (stirng)
+    Output: voice from computer
+    letterpause - default = .25
+    wordpause - default = .5
+    """
+    
+    words = text.lower()        #convert the words to lower case 
     words = words.split()     #make text lowercase and split the text into individual words)
     for word in words:
               
         for letter in word:      #nest for loop to check for the letters in 
             if letter in icao:          
-                os.system("say " + icao[letter])
-                time.sleep(pauseletter)
-        time.sleep(pauseword)
+                os.system("say " + icao[letter])     #use the linux code to prounounce 
+                time.sleep(pauseletter)         #pause between spoken letters
+        time.sleep(pauseword)               # pause between spoken words
 
 
 speak_ICAO("Sup bro",2,1)
@@ -151,66 +187,85 @@ works of an author, or in a single text.
 
 import string
 
-filename = input("Enter filename: ")
-file = open(filename)
-text = file.read().lower()
-
-for pun in string.punctuation:          #get rid of punctuation by replacing it to "")
-    text= text.replace(pun,"")
-word_list = text.split()                #split the text into words only 
+def hapax(filename):
+    """
+    A hapax legomenon (often abbreviated to hapax) is a word which
+    occurs only once in either the written record of a language, the
+    works of an author, or in a single text. This function returns all
+    hapaxes found in a text file.
     
-hapax = set()                   
-repeat = set()          #count for duplicates
+    Input: filename (string)
+    Output: hapax (string)
+    """
+    file = open(filename)               #open file
+    text = file.read().lower()              #makes it lower case
 
-for word in word_list:
-    if word not in hapax:           #add words if it is not in hapax
-        hapax.add(word)
-    else:
-        repeat.add(word)        #add the repeated word in this list
-    if word in repeat:          #remove the repeated words from hapaxes
-        hapax.remove(word)
+    for pun in string.punctuation:          #get rid of punctuation by replacing it to "")
+        text= text.replace(pun,"")
+    word_list = text.split()                #split the text into words only 
+    
+    hapax = set()                   
+    repeat = set()          #count for duplicates
+
+    for word in word_list:
+        if word not in hapax:           #add words if it is not in hapax
+            hapax.add(word)
+        else:
+            repeat.add(word)        #add the repeated word in this list
+        if word in repeat:          #remove the repeated words from hapaxes
+            hapax.remove(word)
         
-print('The hapaxes are: ')
-for w in hapax:
-    print(w)
-
+    print('The hapaxes are: ')          #print hapaxes
+    for w in hapax:
+        print(w)
+        
+filename = input("Enter filename: ")
+hapax(filename)
 #-------------------------------------------------------------------------------------------------------------------------
 
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Sep 15 14:32:55 2016
 
-@author: Tommy Cheng
-"""
 '''
     Problem 6: This program prompts user to enter a text file name, it will create a new text file in
     which all the lines from the original file are numbered from 1 to n
     (where n is the number of lines in the file).
 '''
 
-filename = input("Enter filename: ")    #ask for user input in the local directory 
-file = open(filename)
-line = file.readline() # read first line. This ensures proceeding loop runs at least once
+def numlines(filename):
+    """
+    This function, given a text file, will create a new text file in
+    which all the lines from the original file are numbered from 1 to n
+    (where n is the number of lines in the file).
+    
+    Input: filename
+    Output: a modified textfile with number of lines.
+    filepath - system path to text file.
+    
+    """
+    file = open(filename)
+    line = file.readline() # read first line. This ensures proceeding loop runs at least once
 
-i = 1            # assign iterator to number lines
+    i = 1            # assign iterator to number lines
     
  
-new_text = ''       #create an empty str variable
+    new_text = ''       #create an empty str variable
 
-while line:                     #loop through the line of the original file
-    new_text += str(i) + ' '    #add the line number
-    new_text += line            #add the line
-    i += 1                      # add 1 to iterator
-    line = file.readline()      #read the next line of the file
+    while line:                     #loop through the line of the original file
+        new_text += str(i) + ' '    #add the line number
+        new_text += line            #add the line
+        i += 1                      # add 1 to iterator
+        line = file.readline()      #read the next line of the file
     
-file.close()                    #closes the original file
+        file.close()                    #closes the original file
 
 
-new_filename = input('Enter a new file name: ')
-new_file = open(new_filename, 'w')
-new_file.write(new_text)
-new_file.close()
+    new_filename = input('Enter a new file name: ')         #Enter the name of the new file
+    new_file = open(new_filename, 'w')
+    new_file.write(new_text)                            #write on it 
+    new_file.close()                        #close file to prevent memory leak
     
+filename = input("Enter filename: ")
+numlines(filename)
 #-------------------------------------------------------------------------------------------------------------------------
 
 """
@@ -224,32 +279,42 @@ Write a program that will calculate the average word length of a text
 stored in a file (i.e the sum of all the lengths of the word
 the text, divided by the number of word ). 
 '''
+def avglength(filename):
+    """
+    This function will calculate the average word length of a text
+    stored in a file (i.e the sum of all the lengths of the word tokens in
+    the text, divided by the number of word tokens).
+    
+    Input: filename
+    Output: average word count
+    """
+
+    file = open(filename)           #open file
+    
+    line = file.read()              #read the line
+
+    text = line               #create a variable to store the line
+    text = text.lower()     #turn the text into lowecase letter
+    wordcount = 0           #set up the counter
 
 
-filename = input("Enter filename: ")
-file = open(filename)
-
-line = file.read()
-
-text = line
-text = text.lower() 
-wordcount = 0           #set up the counter
-
-
-for i in range(len(text)):
-        if (ord(text[i]) > 96 and ord(text[i])<123 ):
-            wordcount = wordcount +1     
+    for i in range(len(text)):
+        if (ord(text[i]) > 96 and ord(text[i])<123 ):       #if each letter is in the ASCII code of the alphabets 
+            wordcount = wordcount +1                         #then increment the counter by 1                                          
 
 #for i in range(len(text)):
 #    if text[i] != ' ':
 #        wordcount = wordcount + 1            
 
             
-print(wordcount)
+            print(wordcount)
 
-words = float( len(text.split()) * 1.0)
+    words = float( len(text.split()) * 1.0)
 
-print ('The average word length of this text is: ', "%.1f"%(wordcount/words),'words' )
+    print ('The average word length of this text is: ', "%.1f"%(wordcount/words),'words' )
+
+filename = input("Enter filename: ")
+avglength(filename)
 
 #-------------------------------------------------------------------------------------------------------------------------
 # -*- coding: utf-8 -*-
@@ -262,35 +327,40 @@ Created on Sat Sep 10 01:18:47 2016
 '''Problem 8 : Guess the number game: this program asks user to guess a number between
 0 to 20 inclusively. The user has infintely many trials. When the user guesses it correctly,
 it will 
-
-
 '''
 
 import random
 
-num = random.randint(1, 20)     #generate a number between 1 to 0 inclusively
-print(num)
+def guessGame():
+    """
+     This function is a Guess the number. A number to be guessed 
+     is randomly chosen between 1 and 20. It prompts users to guess a number.
+     Once guessed, the number of guesses
+     is printed. 
+     """
+    num = random.randint(1, 20)     #generate a number between 1 to 0 inclusively
 
-print('Hello! What is your name?')
-name = input('Enter your name: ')
-print('\n',name,',', 'I am thinking of a number between 1 and 20. Take a guess.')
+    print('Hello! What is your name?')
+    name = input('Enter your name: ')
+    print('\n',name,',', 'I am thinking of a number between 1 and 20. Take a guess.')
 
-guess = 0           #initiate a varible
-counter = 0         #counter
+    guess = 0           #initiate a varible
+    counter = 0         #counter
 
-while guess!= num:
-    guess = input('Your guess(integer): ')
-    guess = int(guess)
-    if guess < num:                     #if guess is lower than the answer, prompt user to enter again
-        counter = counter + 1
-        print('Your guess is too low. Take a guess')
-    elif guess > num:                   #if guess is higher than the answer, prompt user to enter again
-        counter = counter + 1
-        print('Your guess is too high. Take a guess')
-    elif guess == num:                  #if guess is right, end program and print our the total number of guesses
-        counter = counter + 1
-        print('Good job,',name,'! You guessed my number in', counter, 'guesses !')
+    while guess!= num:
+        guess = input('Your guess(integer): ')
+        guess = int(guess)
+        if guess < num:                     #if guess is lower than the answer, prompt user to enter again
+            counter = counter + 1
+            print('Your guess is too low. Take a guess')
+        elif guess > num:                   #if guess is higher than the answer, prompt user to enter again
+            counter = counter + 1
+            print('Your guess is too high. Take a guess')
+        elif guess == num:                  #if guess is right, end program and print our the total number of guesses
+            counter = counter + 1
+            print('Good job,',name,'! You guessed my number in', counter, 'guesses !')
 
+guessGame()             #run main function
 #-------------------------------------------------------------------------------------------------------------------------
 
 # -*- coding: utf-8 -*-
@@ -306,12 +376,18 @@ given list and prompt user to guess the word.
 import numpy
 import random
 
+
 color = ['orange', 'yellow', 'blue', 'red', 'brown', 'purple', 'green']        #word list
 num = random.randint(0, len(color)-1)                       #generate a random color 
 word = color[num]
 
-
 def anagramgenerator(choice):
+    """
+    This function generates anagram from the color chocies using random number generator.
+    Input: word of a particular color (string)
+    Ouput: Anagram
+    """
+    
     order = numpy.random.choice(len(choice), len(choice), replace = False) #this line generates order of position of the letter of anagram, replacement of letter is not allowed)
     anagram = ''
     for i in range(len(order)):                 #this combines the letter to anagram according to the position
@@ -319,9 +395,14 @@ def anagramgenerator(choice):
     return(anagram)
     
 
-anagram = anagramgenerator(word)
+anagram = anagramgenerator(word)        #generate anagram
 
 def anagramGame():                          #execution of the game
+    """
+    This is the main funciton of the anagram game. It prompts the users to guess
+    the name of color from an anagram. 
+    """
+    
     stop = False                           
     print('***Anagram***\n')
     print('Color word anagram: ',anagram,'\n')  
@@ -333,7 +414,7 @@ def anagramGame():                          #execution of the game
             stop = True
             print('Correct!')
             
-anagramGame()
+anagramGame()   #main function
 
 #-------------------------------------------------------------------------------------------------------------------------
 # -*- coding: utf-8 -*-
@@ -348,16 +429,23 @@ Created on Tue Sep 13 11:04:54 2016
    and () means the letter is the right letter but not in the right position. 
    The restriction on this game is it only allows a word with no repeated letters
 '''
-print('Welcome to lingo!')
-lingo = input('Enter the lingo: ')
 
-stop = False
-while stop == False:
-    word = input('Enter a 5-letter word: ')
-    char_lingo = list(lingo)            #convert lingo into char list
-    char_word = list(word)              #convert guess word into char list
-    if lingo == word:       #if the word matches with lingo, show lingo
-        print('Yes, the word is : '+lingo)
+def lingo():
+    """
+    This is the main function of the lingo game. It first generates a word. It then 
+    prompts the user to input a word. It will then give different hints based user's input.
+    Input: none
+    """
+    print('Welcome to lingo!')
+    lingo = input('Enter the lingo: ')
+
+    stop = False
+    while stop == False:
+        word = input('Enter a 5-letter word: ')     #prompt user to enter a 5-letter word
+        char_lingo = list(lingo)            #convert lingo into char list
+        char_word = list(word)              #convert guess word into char list
+        if lingo == word:       #if the word matches with lingo, show lingo
+            print('Yes, the word is : '+lingo)
         print('Congrats, you guessed it!')
         break
    
@@ -371,6 +459,8 @@ while stop == False:
             char_word[i] = ''.join(hint2)
     clue = ''.join(char_word)
     print('Clue: ',clue)
+    
+lingo()
 #-------------------------------------------------------------------------------------------------------------------------
 
 # -*- coding: utf-8 -*-
@@ -423,15 +513,17 @@ for line in sentence :
 Created on Thu Sep 15 19:23:11 2016
 
 @author: Tommy Cheng
-"""
+
 
 """
-Problem 12:  This program finds the sets of words of anagram that share the same characters that
-contain the most words in them. 
-"""
+    """
+    This funtion takes in a wordbank of anagrams from a text file and prints to 
+    the console the sets containing the most anagrams with matching letters.
+    It then  finds the sets of words of anagram that share the same characters that
+    contain the most words in them. 
 
-def anagram() :
-	
+    """
+def anagram():
 	content = ""
 
 	# I use with here so file needs not to be close'
@@ -494,6 +586,10 @@ arbitrary order. And it prints whether there exists complete pairs of brackets
 import random
 
 def generate_string(n):
+    """This function generates a string of even number of brackets.
+    Input: n (number of pairs of brackets)
+    Ouput: brakets (strings)
+    """
     string = ''
     for i in range(2*n):                #Here I use a random number generator to generate 
         if random.randint(0,1) == 0:    #open and close brackets
@@ -502,7 +598,14 @@ def generate_string(n):
             string += ']'
     return(string)
 
+
 def check(string):
+    """
+    This function determines whether the brackets generated from the the previous 
+    are even.
+    Input: string(brackets)
+    Output: Okay if even, notok if not even
+    """
     counter = 0;
     for i in range (len(string)):       
         if string[i] == '[':            #Here is a special way of counting, if it starts 
@@ -518,7 +621,7 @@ def check(string):
         print(string + '\nNotOK')
 
 
-
+###test case
 check( generate_string(1))
 check( generate_string(2))
 check( generate_string(3))
@@ -531,13 +634,6 @@ check( generate_string(4))
 Created on Sat Sep 10 02:53:21 2016
 @author: TommyCheng
 """
-'''
-This program generates the/a sequence with the highest possible
-number of Pokemon names where the subsequent name starts with
-the final letter of the preceding name from a givenlist. No Pokemon name is to be
-repeated. 
-'''
-
 
 
 pokeList = ["audino","bagon","baltoy","banette","bidoof", "braviary", "bronzor", "carracosta","charmeleon","cresselia", "croagunk", 
@@ -549,6 +645,12 @@ finalList = []  # this is the final list
 
 
 def solve(newList):
+    """
+    This program generates the/a sequence with the highest possible
+    number of Pokemon names where the subsequent name starts with
+    the final letter of the preceding name from a givenlist. No Pokemon name is to be
+    repeated. 
+    """
 	global finalList,pokeList
 
 	flag = 0
@@ -589,32 +691,35 @@ Created on Sat Sep 10 05:31:32 2016
 
 @author: Tommy Cheng
 """
-'''Problem 14: Alternade: This program prints all the alternade of every word in 
-the wordbank taken alternatively in a strict sequence, and used in the same order as the original word,
-make up at least two other words. All letters are be used, but the
-smaller words are not necessarily of the same length. It will not print if the alternade only has fewer than 2 words
-'''
 
-file = open('wordlist.txt')
-wordbank = file.read().split()
-wordlist1, wordlist2 = [], []
-
-smallword_1 = ''
-smallword_2 = ''
-
-
-for word in wordbank:               #go throgh the each word in the wordbank
-    smallword_1 = ''                #create a temporary variable to store a small word
-    smallword_2 = ''                #create a temp variable to store another small word
-    word_1 = ''             #temp variable, check to see if the str is empty, if so it will not print
-    word_2 = ''               #same purpose as the above for 
-
-    length = 0
+def alternade():
+    """
+    The function reads wordbank textfile. It then prints all the alternade of every word in 
+    the wordbank taken alternatively in a strict sequence, and used in the same order as the original word,
+    make up at least two other words. All letters are be used, but the
+    smaller words are not necessarily of the same length. It will not print if the alternade only has fewer than 2 words
+    """
     
-    if len(word) == 1:             #Case1: if the word has 1 letter
-        print('"' + word + '": makes no word.')
-    elif(len(word)>1):              #Case2: if the word has more than 1 letter
-        for i in range(len(word)):
+    file = open('wordlist.txt')
+    wordbank = file.read().split()
+    wordlist1, wordlist2 = [], []
+
+    smallword_1 = ''
+    smallword_2 = ''
+
+
+    for word in wordbank:               #go throgh the each word in the wordbank
+        smallword_1 = ''                #create a temporary variable to store a small word
+        smallword_2 = ''                #create a temp variable to store another small word
+        word_1 = ''             #temp variable, check to see if the str is empty, if so it will not print
+        word_2 = ''               #same purpose as the above for 
+
+        length = 0
+    
+        if len(word) == 1:             #Case1: if the word has 1 letter
+            print('"' + word + '": makes no word.')
+        elif(len(word)>1):              #Case2: if the word has more than 1 letter
+            for i in range(len(word)):
             #print(i)
             if i%2==0:                 #extract the even position letter(letter in position, 0, 2, 4, ...)
                 smallword_1 = smallword_1 + word[i]   #combine the even position letters to form a word
@@ -631,7 +736,7 @@ for word in wordbank:               #go throgh the each word in the wordbank
     if word_1 != '' and word_2 !='':        #if both aren't empty, print the strings
         print(word + ' makes ' + word_1 +' and ' + word_2 +'\n')
     
-                
+alternade()
 #-------------------------------------------------------------------------------------------------------------------------
                 
         

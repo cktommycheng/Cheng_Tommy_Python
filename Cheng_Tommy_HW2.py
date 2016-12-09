@@ -273,42 +273,31 @@ This program prompts user for an input of an integer and determines
 whether it is a prime number 
 
 '''
-
 import math
 
-
-def prime(n):
+i = 2
+def prime_number(n):
     """
-    #This function takes an integer as input, returns True if it's a prime, 
-    returns False if it is not. 
-    Parameters
-    n = number input by user, assume a positive integer
+    This function determines whether a number is prime
+    Input: number(int)
+    Output: True/False
     """
+    global i
+    if (n % i == 0 and n>i): #determine whether the number is divible by its factor
+        return True
+    if(n > i):              #if not increment i by 1 
+        i = i + 1
+        return prime_number(n)      #recrusive step til i = n 
 
-    if n >1:  # check that number is greater than 1
-        if n == 2:
-            return True  
-        elif n % 2 == 0:  # if the number is even
-            return False  
-        else: 
-        # the sqrt takes care of the the number 
-        # This for loop takes care of the number that is not division by 2 but odd numbers after 1
-            for i in range(3, int(math.sqrt(n))+1, 2):
-                if n % i == 0:
-                    return False  # number is not prime if it has factors that is smaller than number
-                else:
-                    return True  
-            return False  
-    
-
-
-num = input("Enter a positive integer: ")
-num = int(num)
-if prime(num) == True:
-    print(num, "is a prime number")
-else:
-    print(num, "is not a prime number")
-    
+def prime_main():
+    p = eval(input('Enter the number to check for prime number : '))
+    prime = prime_number(p)
+    if(prime is True):
+        print ("%d is not a prime number" %p)
+    else:
+        print ("%d is a prime number" %p)
+        
+prime_main()
 #-------------------------------------------------------------------------------------------------------------------------
     # -*- coding: utf-8 -*-
 """
